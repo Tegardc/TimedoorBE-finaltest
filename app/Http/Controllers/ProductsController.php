@@ -9,9 +9,8 @@ use Illuminate\Validation\ValidationException;
 
 class ProductsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+
     public function index(Request $request)
     {
         $pagination = $request->query('page') ?? 10;
@@ -19,7 +18,7 @@ class ProductsController extends Controller
         $size = $request->query('size') ?? null;
         $product = $request->query('product') ?? null;
         $query = Products::query();
-        // $keyword = $request->query('keyword', '');
+
         if ($product) {
             $query->where('name', 'like', "%$product%");
         }
@@ -38,25 +37,16 @@ class ProductsController extends Controller
         if ($products->isEmpty() && $products->currentPage() > $products->lastPage()) {
             $products = $query->paginate($pagination, ['*'], 'page', $products->lastPage());
         }
-        // $products = Products::with('category', 'brands')->where('name', 'like', "%{$keyword}%")
-        //     ->orWhere('price', 'like', "%{$keyword}%")
-        //     ->orWhere('quantity', 'like', "%{$keyword}%")
-        //     ->orderBy('quantity', 'desc')
-        //     ->paginate(10);
+       
         return response()->json(['message' => 'Successfully Display Data', 'status' => true, 'data' => $products]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         try {
